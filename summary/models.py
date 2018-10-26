@@ -102,20 +102,41 @@ class Info_FieldCharacter(models.Model):
 
 
 class Info_ExperiLocation(models.Model):
-    pass
+    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
+    testPoint_name = models.CharField(verbose_name="试点名称", max_length=40)
+    testPoint_loc = models.CharField(verbose_name="所在地", max_length=20)
+    testLoc_longitude = models.CharField(verbose_name="经度", max_length=10)
+    testLoc_latitude = models.CharField(verbose_name="纬度", max_length=10)
+    testLoc_altitude = models.CharField(verbose_name="海拔", max_length=10)
+    address = models.TextField(verbose_name="通讯地址")
+    contacts = models.CharField(verbose_name="联系人", max_length=10)
+    contact_num = models.CharField(verbose_name="联系电话", max_length=15)
+    contact_email = models.EmailField(verbose_name="电子邮箱")
 
 
 class Info_Experiment(models.Model):
-    pass
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    test_group = models.CharField(verbose_name="试验组别", max_length=20)
+    line_name = models.CharField(verbose_name="品系名称", max_length=50)
+    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
 
 
 class Criteria_Character(models.Model):
-    pass
+    line_trait = models.CharField(verbose_name="性状", max_length=20)
+    criteria_record = models.TextField(verbose_name="记载标准")
 
 
 class PurposeRequirement(models.Model):
-    pass
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    test_group = models.CharField(verbose_name="试验组别", max_length=20)
+    test_purpose = models.TextField(verbose_name="试验目的")
+    test_request = models.TextField(verbose_name="试验要求")
 
 
 class Info_Yield(models.Model):
-    pass
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    line_name = models.CharField(verbose_name="品系名称", max_length=50)
+    test_rep1 = models.DecimalField(verbose_name="重复1", max_digits=4, decimal_places=2, default=0.0)
+    test_rep2 = models.DecimalField(verbose_name="重复2", max_digits=4, decimal_places=2, default=0.0)
+    test_rep3 = models.DecimalField(verbose_name="重复3", max_digits=4, decimal_places=2, default=0.0)
+    avg_yield = models.DecimalField(verbose_name="平均值", max_digits=4, decimal_places=2, default=0.0)
