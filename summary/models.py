@@ -1,10 +1,39 @@
 from django.db import models
 
 # Create your models here.
-class Info_TestLines(models.Model):
-    # information for each lines tested
+
+class Info_ExperiLocation(models.Model):  #承试点信息
+    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
+    testPoint_name = models.CharField(verbose_name="试点名称", max_length=40)
+    testPoint_loc = models.CharField(verbose_name="所在地", max_length=20)
+    testLoc_longitude = models.CharField(verbose_name="经度", max_length=10)
+    testLoc_latitude = models.CharField(verbose_name="纬度", max_length=10)
+    testLoc_altitude = models.CharField(verbose_name="海拔", max_length=10)
+    address = models.TextField(verbose_name="通讯地址")
+    contacts = models.CharField(verbose_name="联系人", max_length=10)
+    contact_num = models.CharField(verbose_name="联系电话", max_length=15)
+    contact_email = models.EmailField(verbose_name="电子邮箱")
+
+    def __str__(self):
+        return self.test_unit
+
+
+class Info_Experiment(models.Model):  #试验信息表
+    info_experiLocation = models.ForeignKey(Info_ExperiLocation, on_delete=models.CASCADE)
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    test_group = models.CharField(verbose_name="试验组别", max_length=20)
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
-    line_institute = models.CharField(verbose_name="选育单位", max_length=50)
+    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
+
+    def __str__(self):
+       return self.test_name
+
+
+class Info_TestLines(models.Model):  #参试品种
+    # information for each lines tested
+    info_experiment = models.ForeignKey(Info_Experiment, on_delete=models.CASCADE)
+    line_name = models.CharField(verbose_name="品系名称", max_length=50)
+    line_institute: str = models.CharField(verbose_name="选育单位", max_length=50)
     line_owner = models.CharField(verbose_name="选育人", max_length=10)
     line_contactor = models.CharField(verbose_name="联系人", max_length=10)
     line_type = models.CharField(verbose_name="品种类型", max_length=10)
@@ -12,14 +41,16 @@ class Info_TestLines(models.Model):
     line_target_date = models.DateField(verbose_name="育成日期")
     line_phone = models.CharField(verbose_name="联系电话", max_length=15)
     line_Email = models.EmailField(verbose_name="联系邮箱")
-    exp_name = models.CharField(verbose_name="试验名称", max_length=20)
-    exp_group = models.CharField(verbose_name="试验组别", max_length=20)
+
+    def __str__(self):
+        return self.line_name
 
 
-class Info_EcoCharacter(models.Model):
+class Info_EcoCharacter(models.Model):  #经济性状
     # information for economic characters
-    line_name = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
     #line_period = models.PositiveIntegerField(verbose_name="生育期", default=0)
+    line_name = models.CharField(verbose_name="品系名称", max_length=50)
     pod_high = models.DecimalField(verbose_name="低荚高", max_digits=2, decimal_places=2, default=0.0)
     weight_HGrain = models.DecimalField(verbose_name="百粒重", max_digits=2, decimal_places=2, default=0.0)
     rate_PurpleSpot = models.DecimalField(verbose_name="紫斑率", max_digits=2, decimal_places=2, default=0.0)
@@ -28,8 +59,11 @@ class Info_EcoCharacter(models.Model):
     rate_others = models.DecimalField(verbose_name="其他粒率", max_digits=2, decimal_places=2, default=0.0)
     remarks = models.TextField(verbose_name="备注")
 
+    def __str__(self):
+        return self.line_name
 
-class Info_FieldCharacter(models.Model):
+
+class Info_FieldCharacter(models.Model):  #田间性状
     # information for field characters
     shape = (
         ('圆叶', '圆叶'),
@@ -80,7 +114,8 @@ class Info_FieldCharacter(models.Model):
         ('4', '4'),
     )
 
-    line_name = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+    line_name = models.CharField(verbose_name="品系名称", max_length=50)
     seeding_date = models.DateField(verbose_name='播种期')
     seeding_state = models.DateField(verbose_name='出苗期')
     flowering_period = models.DateField(verbose_name="开花期")
@@ -100,43 +135,37 @@ class Info_FieldCharacter(models.Model):
     in_green = models.DecimalField(verbose_name="症青", max_digits=2, decimal_places=2, default=0.0)
     virus_other = models.CharField(verbose_name="其他病毒病", max_length=50)
 
-
-class Info_ExperiLocation(models.Model):
-    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
-    testPoint_name = models.CharField(verbose_name="试点名称", max_length=40)
-    testPoint_loc = models.CharField(verbose_name="所在地", max_length=20)
-    testLoc_longitude = models.CharField(verbose_name="经度", max_length=10)
-    testLoc_latitude = models.CharField(verbose_name="纬度", max_length=10)
-    testLoc_altitude = models.CharField(verbose_name="海拔", max_length=10)
-    address = models.TextField(verbose_name="通讯地址")
-    contacts = models.CharField(verbose_name="联系人", max_length=10)
-    contact_num = models.CharField(verbose_name="联系电话", max_length=15)
-    contact_email = models.EmailField(verbose_name="电子邮箱")
+    def __str__(self):
+        return self.line_name
 
 
-class Info_Experiment(models.Model):
-    test_name = models.CharField(verbose_name="试验名称", max_length=40)
-    test_group = models.CharField(verbose_name="试验组别", max_length=20)
-    line_name = models.CharField(verbose_name="品系名称", max_length=50)
-    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
-
-
-class Criteria_Character(models.Model):
+class Criteria_Character(models.Model):  #性状记载标准
     line_trait = models.CharField(verbose_name="性状", max_length=20)
     criteria_record = models.TextField(verbose_name="记载标准")
 
+    def __str__(self):
+        return self.line_trait
 
-class PurposeRequirement(models.Model):
+
+class PurposeRequirement(models.Model):  #试验目的
+    info_experiment = models.ForeignKey(Info_Experiment, on_delete=models.CASCADE)
     test_name = models.CharField(verbose_name="试验名称", max_length=40)
     test_group = models.CharField(verbose_name="试验组别", max_length=20)
     test_purpose = models.TextField(verbose_name="试验目的")
     test_request = models.TextField(verbose_name="试验要求")
 
+    def __str__(self):
+        return self.test_name
 
-class Info_Yield(models.Model):
+
+class Info_Yield(models.Model):  #产量信息表
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
     test_name = models.CharField(verbose_name="试验名称", max_length=40)
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
     test_rep1 = models.DecimalField(verbose_name="重复1", max_digits=4, decimal_places=2, default=0.0)
     test_rep2 = models.DecimalField(verbose_name="重复2", max_digits=4, decimal_places=2, default=0.0)
     test_rep3 = models.DecimalField(verbose_name="重复3", max_digits=4, decimal_places=2, default=0.0)
     avg_yield = models.DecimalField(verbose_name="平均值", max_digits=4, decimal_places=2, default=0.0)
+
+    def __str__(self):
+        return self.line_name
