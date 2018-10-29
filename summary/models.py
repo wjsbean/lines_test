@@ -18,32 +18,44 @@ class Info_ExperiLocation(models.Model):  #承试点信息
         return self.test_unit
 
 
-class Info_Experiment(models.Model):  #试验信息表
-    info_experiLocation = models.ForeignKey(Info_ExperiLocation, on_delete=models.CASCADE)
-    test_name = models.CharField(verbose_name="试验名称", max_length=40)
-    test_group = models.CharField(verbose_name="试验组别", max_length=20)
-    line_name = models.CharField(verbose_name="品系名称", max_length=50)
-    test_unit = models.CharField(verbose_name="承试单位", max_length=40)
-
-    def __str__(self):
-       return self.test_name
-
-
 class Info_TestLines(models.Model):  #参试品种
     # information for each lines tested
-    info_experiment = models.ForeignKey(Info_Experiment, on_delete=models.CASCADE)
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
-    line_institute: str = models.CharField(verbose_name="选育单位", max_length=50)
+    line_institute = models.CharField(verbose_name="选育单位", max_length=50)
     line_owner = models.CharField(verbose_name="选育人", max_length=10)
     line_contactor = models.CharField(verbose_name="联系人", max_length=10)
     line_type = models.CharField(verbose_name="品种类型", max_length=10)
     line_parents = models.CharField(verbose_name="亲本组合", max_length=50)
     line_target_date = models.DateField(verbose_name="育成日期")
     line_phone = models.CharField(verbose_name="联系电话", max_length=15)
-    line_Email = models.EmailField(verbose_name="联系邮箱")
+    line_email = models.EmailField(verbose_name="联系邮箱")
 
     def __str__(self):
         return self.line_name
+
+
+class PurposeRequirement(models.Model):  #试验目的
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    test_group = models.CharField(verbose_name="试验组别", max_length=20)
+    test_purpose = models.TextField(verbose_name="试验目的")
+    test_request = models.TextField(verbose_name="试验要求")
+
+    def __str__(self):
+        return self.test_name
+
+
+class Info_Experiment(models.Model):  #试验信息表
+    line_name = models.ForeignKey(Info_TestLines, verbose_name="参试品系", on_delete=models.CASCADE)
+    test_group = models.ForeignKey(PurposeRequirement, verbose_name="试验组别", on_delete=models.CASCADE)
+    test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    test_unit = models.ForeignKey(Info_ExperiLocation, verbose_name="承试单位", on_delete=models.CASCADE)
+    #test_name = models.CharField(verbose_name="试验名称", max_length=40)
+    #test_group = models.CharField(verbose_name="试验组别", max_length=20)
+    #line_name = models.CharField(verbose_name="品系名称", max_length=50)
+    #test_unit = models.CharField(verbose_name="承试单位", max_length=40)
+
+    def __str__(self):
+       return self.test_name
 
 
 class Info_EcoCharacter(models.Model):  #经济性状
@@ -145,17 +157,6 @@ class Criteria_Character(models.Model):  #性状记载标准
 
     def __str__(self):
         return self.line_trait
-
-
-class PurposeRequirement(models.Model):  #试验目的
-    info_experiment = models.ForeignKey(Info_Experiment, on_delete=models.CASCADE)
-    test_name = models.CharField(verbose_name="试验名称", max_length=40)
-    test_group = models.CharField(verbose_name="试验组别", max_length=20)
-    test_purpose = models.TextField(verbose_name="试验目的")
-    test_request = models.TextField(verbose_name="试验要求")
-
-    def __str__(self):
-        return self.test_name
 
 
 class Info_Yield(models.Model):  #产量信息表
