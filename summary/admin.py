@@ -8,25 +8,30 @@ class Info_ExperiLocationAdmin(admin.ModelAdmin):
     list_display = ('test_unit', 'testPoint_name', 'testPoint_loc', 'testLoc_longitude',
                     'testLoc_latitude', 'testLoc_altitude', 'address', 'contacts',
                     'contact_num', 'contact_email')
+    ordering = ('test_unit',)
 
 
 class Info_TestLinesAdmin(admin.ModelAdmin):
     list_display = ('line_name', 'line_institute', 'line_owner', 'line_contactor', 'line_type',
                     'line_parents', 'line_target_date', 'line_phone', 'line_email')
+    ordering = ('line_name',)
 
 
 class PurposeRequirementAdmin(admin.ModelAdmin):
     list_display = ('test_name', 'test_group', 'test_purpose', 'test_request')
+    ordering = ('test_name',)
 
 
 class Info_ExperimentAdmin(admin.ModelAdmin):
     list_display = ('line_name', 'test_group', 'test_name', 'test_unit')
+    ordering = ('line_name',)
 
 
 class Info_EcoCharacterAdmin(admin.ModelAdmin):
     list_display = ('info_testLines', 'line_name', 'pod_high', 'weight_HGrain',
                     'rate_PurpleSpot', 'rate_BrownSpot', 'rate_Insect',
                     'rate_others', 'remarks')
+    ordering = ('info_testLines',)
 
 
 class Info_FieldCharacterAdmin(admin.ModelAdmin):
@@ -36,15 +41,18 @@ class Info_FieldCharacterAdmin(admin.ModelAdmin):
                     'pod_BearHabit', 'plant_architecture', 'pod_dehiscence',
                     'deciduous', 'lodging', 'root_rot', 'smv', 'in_green',
                     'virus_other')
+    ordering = ('info_testLines',)
 
 
 class Criteria_CharacterAdmin(admin.ModelAdmin):
     list_display = ('line_trait', 'criteria_record')
+    ordering = ('line_trait',)
 
 
 class Info_YieldAdmin(admin.ModelAdmin):
     list_display = ('info_testLines', 'test_name', 'line_name',
                     'test_rep1', 'test_rep2', 'test_rep3', 'avg_yield')
+    ordering = ('info_testLines',)
 
 
 admin.site.register(Info_ExperiLocation, Info_ExperiLocationAdmin)

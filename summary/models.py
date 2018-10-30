@@ -18,8 +18,14 @@ class Info_ExperiLocation(models.Model):  #承试点信息
         return self.test_unit
 
 
+    class Meta:
+        verbose_name = '承试点信息'
+        verbose_name_plural = '承试点信息'
+
+
 class Info_TestLines(models.Model):  #参试品种
     # information for each lines tested
+
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
     line_institute = models.CharField(verbose_name="选育单位", max_length=50)
     line_owner = models.CharField(verbose_name="选育人", max_length=10)
@@ -34,6 +40,11 @@ class Info_TestLines(models.Model):  #参试品种
         return self.line_name
 
 
+    class Meta:
+        verbose_name = '参试品种'
+        verbose_name_plural = '参试品种'
+
+
 class PurposeRequirement(models.Model):  #试验目的
     test_name = models.CharField(verbose_name="试验名称", max_length=40)
     test_group = models.CharField(verbose_name="试验组别", max_length=20)
@@ -44,7 +55,13 @@ class PurposeRequirement(models.Model):  #试验目的
         return self.test_name
 
 
+    class Meta:
+        verbose_name = '试验目的'
+        verbose_name_plural = '试验目的'
+
+
 class Info_Experiment(models.Model):  #试验信息表
+
     line_name = models.ForeignKey(Info_TestLines, verbose_name="参试品系", on_delete=models.CASCADE)
     test_group = models.ForeignKey(PurposeRequirement, verbose_name="试验组别", on_delete=models.CASCADE)
     test_name = models.CharField(verbose_name="试验名称", max_length=40)
@@ -58,9 +75,14 @@ class Info_Experiment(models.Model):  #试验信息表
        return self.test_name
 
 
+    class Meta:
+        verbose_name = '试验信息表'
+        verbose_name_plural = '试验信息表'
+
+
 class Info_EcoCharacter(models.Model):  #经济性状
     # information for economic characters
-    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE, verbose_name="参试品系")
     #line_period = models.PositiveIntegerField(verbose_name="生育期", default=0)
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
     pod_high = models.DecimalField(verbose_name="低荚高", max_digits=2, decimal_places=2, default=0.0)
@@ -75,8 +97,14 @@ class Info_EcoCharacter(models.Model):  #经济性状
         return self.line_name
 
 
+    class Meta:
+        verbose_name = '经济性状'
+        verbose_name_plural = '经济性状'
+
+
 class Info_FieldCharacter(models.Model):  #田间性状
     # information for field characters
+
     shape = (
         ('圆叶', '圆叶'),
         ('卵圆', '卵圆'),
@@ -126,7 +154,7 @@ class Info_FieldCharacter(models.Model):  #田间性状
         ('4', '4'),
     )
 
-    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE, verbose_name="参试品系")
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
     seeding_date = models.DateField(verbose_name='播种期')
     seeding_state = models.DateField(verbose_name='出苗期')
@@ -151,7 +179,13 @@ class Info_FieldCharacter(models.Model):  #田间性状
         return self.line_name
 
 
+    class Meta:
+        verbose_name = '田间性状'
+        verbose_name_plural = '田间性状'
+
+
 class Criteria_Character(models.Model):  #性状记载标准
+
     line_trait = models.CharField(verbose_name="性状", max_length=20)
     criteria_record = models.TextField(verbose_name="记载标准")
 
@@ -159,8 +193,14 @@ class Criteria_Character(models.Model):  #性状记载标准
         return self.line_trait
 
 
+    class Meta:
+        verbose_name = '性状记载标准'
+        verbose_name_plural = '性状记载标准'
+
+
 class Info_Yield(models.Model):  #产量信息表
-    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE)
+
+    info_testLines = models.ForeignKey(Info_TestLines, on_delete=models.CASCADE, verbose_name="参试品系")
     test_name = models.CharField(verbose_name="试验名称", max_length=40)
     line_name = models.CharField(verbose_name="品系名称", max_length=50)
     test_rep1 = models.DecimalField(verbose_name="重复1", max_digits=4, decimal_places=2, default=0.0)
@@ -170,3 +210,8 @@ class Info_Yield(models.Model):  #产量信息表
 
     def __str__(self):
         return self.line_name
+
+
+    class Meta:
+        verbose_name = '产量信息表'
+        verbose_name_plural = '产量信息表'
