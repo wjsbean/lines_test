@@ -10,21 +10,30 @@ class Info_ExperiLocationAdmin(admin.ModelAdmin):
                     'contact_num', 'contact_email')
     ordering = ('test_unit',)
 
+    list_filter = ('test_unit', 'testPoint_loc', 'contacts')
+    search_fields = ('test_unit', 'contacts')
+
 
 class Info_TestLinesAdmin(admin.ModelAdmin):
     list_display = ('line_name', 'line_institute', 'line_owner', 'line_contactor', 'line_type',
                     'line_parents', 'line_target_date', 'line_phone', 'line_email')
     ordering = ('line_name',)
 
+    list_filter = ('line_name', 'line_institute', 'line_owner', 'line_type', 'line_parents')
+    search_fields = ('line_name', 'line_owner')
+
 
 class PurposeRequirementAdmin(admin.ModelAdmin):
     list_display = ('test_name', 'test_group', 'test_purpose', 'test_request')
     ordering = ('test_name',)
 
+    list_filter = ('test_name', 'test_group')
+    search_fields = ('test_name', 'test_group')
+
 
 class Info_ExperimentAdmin(admin.ModelAdmin):
     list_display = ('line_name', 'test_group', 'test_name', 'test_unit')
-    ordering = ('line_name',)
+    ordering = ('line_name', 'test_group')
 
 
 class Info_EcoCharacterAdmin(admin.ModelAdmin):
