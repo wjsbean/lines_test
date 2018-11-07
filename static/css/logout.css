@@ -1,0 +1,59 @@
+.beg-layout-container{
+    /*min-width: 1024px;*/
+}
+
+.beg-layout-container .beg-layout-main{
+    position: absolute;
+}
+
+.beg-layout-container .beg-layout-header{
+    background-color: #FFFFFF;
+    height: 55px;
+    position: fixed;
+    width: 100%;
+    min-width: 800px;
+    border-bottom: 5px solid #1AA094;
+}
+
+.beg-layout-container .beg-layout-header .beg-layout-logo{
+    width: 200px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.beg-layout-container .beg-layout-header .beg-layout-side-toggle{
+    position: absolute;
+    cursor: pointer;
+    z-index: 19940201;
+    left: 200px;
+    color: white;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    background-color: #1AA094;
+    line-height: 30px;
+    top: 25%;
+}
+
+.beg-layout-container .beg-layout-header .beg-layout-side-toggle:hover{
+    background-color: #5FB878;
+}
+
+.beg-layout-container .beg-layout-header .beg-layout-menu{
+    top:0;
+    left: 230px;
+}
+
+.beg-layout-header .beg-layout-menu .beg-layout-nav{
+    background: none;
+}
+
+.beg-layout-header .beg-layout-menu .beg-layout-nav .layui-nav-item{
+    line-height: 60px;
+}
+
+.beg-layout-header .beg-layout-menu .beg-layout-nav .layui-nav-item .layui-nav-more{
+    top: 27px;
+}
+
