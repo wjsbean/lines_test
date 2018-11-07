@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django import forms
+from django.template.loader import get_template
 from .models import User
 import json
 
@@ -44,6 +45,7 @@ def login(req):
                             content_type="application/json")
     else:
         responseData = {'state':1, 'msg':'fail'}
+        template = get_template('login.html')
         return render(req, 'login.html', json.dumps(responseData))
 
 #Login success
