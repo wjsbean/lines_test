@@ -224,6 +224,10 @@ class Criteria_Character(models.Model):  #性状记载标准
 class User(models.Model):
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=50)
+    address = models.TextField()
+    organization = models.CharField(max_length=50)
 
     def __str__(self):
         return self.username
