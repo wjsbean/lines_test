@@ -1,16 +1,14 @@
-from django.shortcuts import render, render_to_response, redirect
-from django.http import HttpResponse, HttpResponseRedirect  
-from django.template import RequestContext
+from django.shortcuts import render, redirect
 from django import forms
-from django.template.loader import get_template
 from .models import User
-import json
 from captcha.fields import CaptchaField
+import hashlib
 
 # Create your views here.
 class UserForm(forms.Form):
     username = forms.CharField(label="用户名称", max_length=50, required=True)
-    password = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
+    password1 = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
+    password2 = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
     phone = forms.CharField(label="联系电话", max_length=20, required=True)
     email = forms.EmailField(label="联系邮件", max_length=50, required=True)
     address = forms.CharField(label="联系地址", widget=forms.Textarea, required=True)
@@ -19,76 +17,96 @@ class UserForm(forms.Form):
     
     
 class LoginForm(forms.Form):
-    username = forms.CharField(label="姓名", max_length=20, help_text="用户名/手机号码")
-    password = forms.CharField(label="密码", widget=forms.PasswordInput(), help_text="密码")
+    username = forms.CharField(label="用户名", max_length=50,
+                               widget=forms.TextInput(attrs={'class':'form-control'}))
+    password = forms.CharField(label="密码", max_length=50,
+                               widget=forms.PasswordInput(attrs={'class':'form-control'}))
     code = CaptchaField(label="验证码", error_messages={"invalid": "验证码错误"})
 
 # Register
 def regist(request):
-    if request.method == 'POST':
-        uf = UserForm(request.POST)
-        if uf.is_valid():
-            # acquire data from forms
-            username = request.POST['username']
-            password = request.POST['password']
-            phone = request.POST['phone']
-            email = request.POST['email']
-            address = request.POST['address']
-            organization = request.POST['organization']
-            message = "恭喜你注册成功"
-            # add to database
-            #User.objects.create(username=username, password=password)
-        else:
-            message = "请检查输入的字段内容"
-    else:
-        uf = UserForm()
+    if request.session.get('is_login', None):
+        return redirect("/index/")
 
-    template = get_template("regist.html")
-    request_context = RequestContext(request)
-    request_context.push(locals())
-    html = template.render(request_context.flatten())
-    response = HttpResponse(html)
+    if request.method == "POST":
+        register_form = UserForm(request.POST)
+        message = "请检查填写的内容！"
+        if register_form.is_valid():
+            username = register_form.cleaned_data['username']
+            password1 = register_form.cleaned_data['password1']
+            password2 = register_form.cleaned_data['password2']
+            phone = register_form.cleaned_data['phone']
+            email = register_form.cleaned_data['email']
+            address = register_form.cleaned_data['address']
+            organization = register_form.cleaned_data['organization']
+            if password1 != password2:
+                message = "两次输入的密码不同！"
+                return render(request, 'regist.html', locals())
+            else:
+                same_name_user = User.objects.filter(username=username)
+                if same_name_user:
+                    message = '用户已经存在，请重新选择用户名！'
+                    return render(request, 'regist.html', locals())
+                same_email_user = User.objects.filter(email=email)
+                if same_email_user:
+                    message = '该邮箱地址已被注册，请使用别的邮箱！'
+                    return render(request, 'regist.html', locals())
 
-    try:
-        if username: response.set_cookie('username', username)
-        if password: response.set_cookie('password', password)
-    except:
-        pass
-    return response
+                new_user = User.objects.create()
+                new_user.username = username
+                new_user.password = hash_code(password1)
+                new_user.email = email
+                new_user.phone = phone
+                new_user.address = address
+                new_user.organization = organization
+                return redirect('/login/')
+
+    register_form = UserForm()
+    return render(request, 'regist.html', locals())
 
 
 def login(request):
-    if request.method == 'POST':
+    if request.session.get('is_login', None):
+        return redirect('/index/')
+
+    if request.method == "POST":
         login_form = LoginForm(request.POST)
+        message = "所有字段都必须填写！"
         if login_form.is_valid():
-            login_name = request.POST['username'].strip()
-            login_password = request.POST['password']
+            username = login_form.cleaned_data['username']
+            password = login_form.cleaned_data['password']
             try:
-                user = User.objects.get(username=login_name)
-                if user.password == login_password:
-                    response = redirect('/')
-                    request.session['username'] = user.username
-                    request.session['password'] = user.password
-                    return redirect('/')
+                user = User.objects.get(name=username)
+                if user.password == hash_code(password):
+                    request.session['is_login'] = True
+                    request.session['user_id'] = user.id
+                    request.session['user_name'] = user.username
+                    return redirect('/index/')
                 else:
-                    message = '密码错误，请核对后重新登录'
+                    message = "密码不正确！"
             except:
-                message = '目前无法登录'
-        else:
-            message = "请检查输入的字段内容"
-    else:
-        login_form = LoginForm()
-    
-    template = get_template('login.html')
-    request_context = RequestContext(request)
-    request_context.push(locals())
-    html = template.render(request_context.flatten())
-    response = HttpResponse(html)
-    return response
-        
+                message = "用户名不存在"
+        return render(request, 'login.html', locals())
+
+    login_form = LoginForm()
+    return render(request, 'login.html', locals())
+
 
 def index(request):
     pass
+    return render(request, 'index.html')
+
 
 def logout(request):
-    pass
+    if not request.session.get('is_login', None):
+        return redirect("/index")
+
+    request.session.flush()
+    return redirect("/index/")
+
+
+def hash_code(s, salt="mysite"):
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())
+    return h.hexdigest()

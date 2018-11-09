@@ -1,0 +1,52 @@
+
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}base{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#my-nav" aria-expanded="false">
+                <span class="sr-only">切换导航条</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Mysite</a>
+        </div>
+
+        <!--Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="my-nav">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{% url 'index' %}">主页</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.seesion.is_login %}
+                    <li><a href="#">当前在线：{{ request.session.user_name }}</a> </li>
+                    <li><a href="{% url 'logout' %}">登出</a> </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">登录</a></li>
+                    <li><a href="{% url 'regist' %}">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaSript plugins) -->
+    <script src="{% static 'JS/jquery-3.3.1.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

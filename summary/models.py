@@ -220,14 +220,22 @@ class Criteria_Character(models.Model):  #性状记载标准
         verbose_name_plural = '性状记载标准'
 
 
-# User
 class User(models.Model):
+    '''
+        Create table for user register
+    '''
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
     email = models.EmailField(max_length=50)
     address = models.TextField()
     organization = models.CharField(max_length=50)
+    c_time = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.username
+
+    class Meta:
+        ordering = ['c_time']
+        verbose_name = "注册用户"
+        verbose_name_plural = "注册用户"

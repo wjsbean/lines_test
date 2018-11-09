@@ -1,8 +1,10 @@
 from django.contrib import admin
 from .models import Info_TestLines, Experiment, Info_ExperiLocation, Info_EcoCharacter, Group
 from .models import Info_FieldCharacter, Info_Yield, PurposeRequirement, Criteria_Character
+from .models import User
 
 # Register your models here.
+
 
 class Info_ExperiLocationAdmin(admin.ModelAdmin):
     list_display = ('test_unit', 'testPoint_name', 'testPoint_loc', 'testLoc_longitude',
@@ -82,6 +84,12 @@ class Info_YieldAdmin(admin.ModelAdmin):
     ordering = ('line_name',)
 
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'password', 'phone', 'email',
+                    'address', 'organization', 'c_time')
+
+
+admin.site.register(User, UserAdmin)
 admin.site.register(Info_ExperiLocation, Info_ExperiLocationAdmin)
 admin.site.register(Info_TestLines, Info_TestLinesAdmin)
 admin.site.register(PurposeRequirement, PurposeRequirementAdmin)
