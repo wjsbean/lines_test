@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django import forms
 from .models import User
 from captcha.fields import CaptchaField
+from django.utils import timezone
 import hashlib
 
 
 class UserForm(forms.Form):
     username = forms.CharField(label="用户名称", max_length=50, required=True)
     password1 = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
-    password2 = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
+    password2 = forms.CharField(label="确认密码", widget=forms.PasswordInput(), required=True)
     phone = forms.CharField(label="联系电话", max_length=20, required=True)
     email = forms.EmailField(label="联系邮件", max_length=50, required=True)
     address = forms.CharField(label="联系地址", widget=forms.Textarea, required=True)
@@ -40,6 +41,9 @@ def regist(request):
             email = register_form.cleaned_data['email']
             address = register_form.cleaned_data['address']
             organization = register_form.cleaned_data['organization']
+            print(password1)
+            print(phone)
+            print(email)
             if password1 != password2:
                 message = "两次输入的密码不同！"
                 return render(request, 'regist.html', locals())
@@ -55,11 +59,14 @@ def regist(request):
 
                 new_user = User.objects.create()
                 new_user.username = username
-                new_user.password = hash_code(password1)
-                new_user.email = email
-                new_user.phone = phone
-                new_user.address = address
-                new_user.organization = organization
+                new_password = hash_code(password1)
+                new_email = email
+                new_phone = phone
+                new_address = address
+                new_organization = organization
+
+                new_user.save()
+
                 return redirect('/login/')
 
     register_form = UserForm()

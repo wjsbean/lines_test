@@ -86,7 +86,7 @@ class Info_YieldAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'password', 'phone', 'email',
-                    'address', 'organization', 'c_time')
+                    'address', 'organization')
 
 
 admin.site.register(User, UserAdmin)
