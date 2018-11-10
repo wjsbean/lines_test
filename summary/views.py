@@ -4,7 +4,7 @@ from .models import User
 from captcha.fields import CaptchaField
 import hashlib
 
-# Create your views here.
+
 class UserForm(forms.Form):
     username = forms.CharField(label="用户名称", max_length=50, required=True)
     password1 = forms.CharField(label="用户密码", widget=forms.PasswordInput(), required=True)
@@ -18,13 +18,14 @@ class UserForm(forms.Form):
     
 class LoginForm(forms.Form):
     username = forms.CharField(label="用户名", max_length=50,
-                               widget=forms.TextInput(attrs={'class':'form-control'}))
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label="密码", max_length=50,
-                               widget=forms.PasswordInput(attrs={'class':'form-control'}))
+                               widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     code = CaptchaField(label="验证码", error_messages={"invalid": "验证码错误"})
 
-# Register
+
 def regist(request):
+    # Register View
     if request.session.get('is_login', None):
         return redirect("/index/")
 
