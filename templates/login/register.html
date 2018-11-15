@@ -1,0 +1,45 @@
+{% extends 'login/base.html' %}
+
+{% block title %}注册{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+           <form class="form-control" action="." method="post">
+                <h2 class="text-center">欢迎注册</h2>
+                <br>
+               {% if tips %}
+                   <div class="alert alert-warning">{{ tips }}</div>
+               {% endif %}
+
+               {% csrf_token %}
+                <br>
+               <div class="form-group">
+                   用户名称: {{ user.username }}
+               </div>
+               <div class="form-group">
+                   注册密码: {{ user.password1 }}
+               </div>
+               <div class="form-group">
+                   密码确认: {{ user.password2 }}
+               </div>
+               <div class="form-group">
+                   联系电话: {{ user.phone }}
+               </div>
+               <div class="form-group">
+                   联系邮箱: {{ user.email }}
+               </div>
+               <div class="form-group">
+                   联系地址: {{ user.address }}
+               </div>
+               <div class="form-group">
+                   工作单位: {{ user.company }}
+               </div>
+
+                <br>
+                <br>
+               <button type="submit" class="btn btn-primary btn-block">注册</button>
+
+           </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,5 +1,4 @@
 from django.contrib.auth.forms import UserCreationForm
-from captcha.fields import CaptchaField
 from .models import UserInfo
 from django import forms
 

@@ -59,7 +59,7 @@ def setpasswordView(request):
         username = request.POST.get('username', '')
         old_password = request.POST.get('password', '')
         new_password = request.POST.get('new_password', '')
-        if User.objects.filter(username=username):
+        if UserInfo.objects.filter(username=username):
             user = authenticate(username=username, password=old_password)
             user.set_password(new_password)
             user.save()
