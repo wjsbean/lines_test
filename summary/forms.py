@@ -6,37 +6,37 @@ class Register(forms.Form):
     '''
         用户注册
     '''
-    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",
+    username = forms.CharField(label="用户名", widget=forms.TextInput(attrs={"class": "form-control",
                                                              "placeholder": "请输入用户名",
                                                              "value": "",
                                                              "required": "required",}),
                                max_length=50, error_messages={"required": "用户名不能为空",})
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control",
+    password1 = forms.CharField(label="密码", widget=forms.PasswordInput(attrs={"class": "form-control",
                                                                  "placeholder": "请输入密码",
                                                                  "value": "",
                                                                  "required": "required",}),
                                min_length=6, max_length=50,
                                error_messages={"required": "密码不能为空",})
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control",
-                                                                  "placeholder": "请输入密码",
+    password2 = forms.CharField(label="验证密码", widget=forms.PasswordInput(attrs={"class": "form-control",
+                                                                  "placeholder": "请再输入一次密码",
                                                                   "value": "",
                                                                   "required": "required", }),
                                 min_length=6, max_length=50,
                                 error_messages={"required": "密码不能为空", })
-    phone = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control",
+    phone = forms.CharField(label="联系电话", widget=forms.TextInput(attrs={"class": "form-control",
                                                           "placeholder": "请输入联系电话",
                                                           "value": "",
                                                           "required": "required",}),
                             min_length=11, max_length=15,
                             error_messages={"required": "密码不能为空",})
-    email = forms.EmailField(widget=forms.TextInput(attrs={"class": "form-control",
+    email = forms.EmailField(label="联系邮箱", widget=forms.TextInput(attrs={"class": "form-control",
                                                            "placeholder": "请输入邮箱地址",
                                                            "value": "",
                                                            "required": "required",}),
                              max_length=50, error_messages={"required": "联系邮箱不能为空",})
     address = forms.CharField(label="联系地址", widget=forms.Textarea, required=True)
     organization = forms.CharField(label="所属单位", max_length=100, required=True)
-    captcha = CaptchaField()
+    code = CaptchaField(label="验证码", error_messages={"invalid": "验证码错误"})
 
     def clean(self):
         #验证验证码
@@ -72,3 +72,9 @@ class Register(forms.Form):
             raise forms.ValidationError("请输入至少8位密码")
 
         return self.cleaned_data
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label="姓名", max_length=20)
+    password = forms.CharField(label="密码", widget=forms.PasswordInput())
+    code = CaptchaField(label="验证码", error_messages={"invalid": "验证码错误"})
