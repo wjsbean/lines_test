@@ -1,0 +1,54 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>
+        {% block title %}
+            Base
+        {% endblock %}
+    </title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- load css -->
+    <link rel="Shortcut Icon" type="/static/images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" media="all">
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body>
+
+    <ul class="layui-nav layui-bg-cyan" lay-filter="" style="font-size: 40px;">
+        <li class="layui-nav-item" style="margin-left: 0px;"><a href="">
+            <img src="/static/images/logo.png" alt="">
+        </a>
+        </li>
+        <li class="layui-nav-item"><a href="">试验组别</a> </li>
+        <li class="layui-nav-item"><a href="">数据录入</a> </li>
+        <li class="layui-nav-item"><a href="">图像采集</a> </li>
+        <li class="layui-nav-item"><a href="">试点分布</a> </li>
+        <li class="layui-nav-item"><a href="">试验阶段报备</a> </li>
+        <li class="layui-nav-item"><a href="">试验报告</a> </li>
+        <li class="layui-nav-item"><a href="">试验常见问题</a> </li>
+        <li class="layui-nav-item"><a href="{% url 'trait_standard' %}">性状采集标准</a> </li>
+        <li class="layui-nav-item"><a href="">系统使用</a> </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">我 </a>
+            <dl class="layui-nav-child">
+                <dd><a href="">个人信息管理</a> </dd>
+                <dd><a href="">安全管理</a> </dd>
+                <dd><a href="">退出</a> </dd>
+            </dl>
+        </li>
+    </ul>
+    <script>
+        layui.use('element', function () {
+            var element = layui.element;
+        })
+    </script>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>

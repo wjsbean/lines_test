@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import UserInfo
 from django.contrib.auth import login, logout, authenticate
 from login.forms import MyUserCreationForm
-from .forms import LoginForm
+from .forms import LoginForm, SetPassword
 # Create your views here.
 
 def registerView(request):
@@ -25,13 +25,13 @@ def loginView(request):
     unit_2_name = "立即注册"
     unit_1 = "/login/setpassword.html"
     unit_1_name = "修改密码"
+    #if request.session.get('is_login', None):
+    #    return redirect('/index/')
 
     if request.method == 'POST':
         login_form = LoginForm()
         username = request.POST.get('username')
         password = request.POST.get('password')
-        print(username)
-        print(password)
         if UserInfo.objects.filter(username = username):
             user = authenticate(username=username, password=password)
             if user:
@@ -44,18 +44,13 @@ def loginView(request):
         else:
             tips = "用户不存在，请注册"
 
-
     login_form = LoginForm()
     return render(request, 'login/login.html', locals())
 
 def setpasswordView(request):
-    title = "修改密码"
-    unit_2 = "/login/login.html"
-    unit_2_name = "立即登录"
-    unit_1 = "/login/register.html"
-    unit_1_name = "立即注册"
     new_password = True
     if request.method == "POST":
+        set_password = SetPassword()
         username = request.POST.get('username', '')
         old_password = request.POST.get('password', '')
         new_password = request.POST.get('new_password', '')
@@ -66,7 +61,10 @@ def setpasswordView(request):
             tips = "密码修改成功"
         else:
             tips = "用户不存在"
-    return render(request, 'login/login.html', locals())
+
+    set_password = SetPassword()
+    #return render(request, 'login/setpassword.html', locals())
+    return render(request, 'main.html', locals())
 
 def logoutView(request):
     logout(request)
