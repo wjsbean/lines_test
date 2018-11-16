@@ -3,17 +3,26 @@
 {% extends 'main.html' %}
 {% block title %}性状采集标准{% endblock %}
 {% block content %}
-    <table class="layui-table" lay-data="{height: 'full-200', cellMinWidth: 100, page: true, limit:30}">
-        <thead>
-            <tr>
-                <th lay-data="{field: 'trait_name', width: 100, sort: true}">性状名称</th>
-                <th lay-data="{field: 'stage', width: 100, sort: true}">采集阶段</th>
-                <th lay-data="{field: 'standard', width: 100, sort: true}">采集标准</th>
-                <th lay-data="{field: 'precision', width: 100, sort: true}">精度</th>
-                <th lay-data="{field: 'value', width: 100, sort: true}">可能值</th>
-                <th lay-data="{field: 'exp_class', width: 100, sort: true}">试验类型</th>
-                <th lay-data="{field: 'trait_type', width: 100, sort: true}">性状类型</th>
-            </tr>
-        </thead>
-    </table>
+    <table id="std_table" lay-filter="test"></table>
+    <script>
+        layui.use('table', function () {
+            var std_table = layui.table;
+
+            table.render({
+                elem:'#demo'
+                ,height: 312
+                ,url: '/data/table/user/'
+                ,page: true
+                ,cols: [[
+                    {field: 'id', title: '编号', width: 80, sort: true, fixed: 'center'}
+                    ,{field: 'trait', title: '性状名称', width: 100, sort: true, fixed: 'center'}
+                    ,{field: 'ac_time', title: '采集时间', width: 100, sort: true, fixed: 'center'}
+                    ,{field: 'ac_std', title: '采集标准', width: 200, sort: true, fixed: 'center'}
+                    ,{field: 'precision', title: '数据精度', width: 50, sort: true, fixed: 'center'}
+                    ,{field: 'value', title: '可能值', width: 150, sort: true, fixed: 'center'}
+                    ,{field: 'group', title: '试验组别', width: 50, sort: true, fixed: 'center'}
+                ]]
+            });
+        });
+    </script>
 {% endblock %}
