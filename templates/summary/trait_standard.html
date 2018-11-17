@@ -1,27 +1,33 @@
 {# templates/trait_standard.html #}
 
 {% extends 'main.html' %}
+{% load staticfiles %}
 {% block title %}性状采集标准{% endblock %}
 {% block content %}
-    <table id="std_table" lay-filter="test"></table>
+    <div class="layui-field-title" style="font-size: 22px">
+        <h2>河南省大豆区域试验性状记载标准</h2>
+    </div>
+    <table id="ac_std"></table>
+    <script src="/static/layui/layui.js" charset="UTF-8"></script>
     <script>
         layui.use('table', function () {
-            var std_table = layui.table;
+            var table = layui.table;
 
             table.render({
-                elem:'#demo'
-                ,height: 312
-                ,url: '/data/table/user/'
+                elem:'#ac_std'
+                ,url: '{% url 'trait_standard' %}'
+                ,cellMinWidth:80
                 ,page: true
                 ,cols: [[
-                    {field: 'id', title: '编号', width: 80, sort: true, fixed: 'center'}
-                    ,{field: 'trait', title: '性状名称', width: 100, sort: true, fixed: 'center'}
-                    ,{field: 'ac_time', title: '采集时间', width: 100, sort: true, fixed: 'center'}
-                    ,{field: 'ac_std', title: '采集标准', width: 200, sort: true, fixed: 'center'}
-                    ,{field: 'precision', title: '数据精度', width: 50, sort: true, fixed: 'center'}
-                    ,{field: 'value', title: '可能值', width: 150, sort: true, fixed: 'center'}
-                    ,{field: 'group', title: '试验组别', width: 50, sort: true, fixed: 'center'}
+                    {field: 'id', title: '编号', width: 60}
+                    ,{field: 'trait', title: '性状名称', width: 150}
+                    ,{field: 'ac_time', title: '采集时间', width: 100}
+                    ,{field: 'ac_std', title: '采集标准', width: 700}
+                    ,{field: 'precision', title: '数据精度', width: 50}
+                    ,{field: 'value', title: '可能值', width: 200}
+                    ,{field: 'group', title: '试验组别', width: 250}
                 ]]
+                ,limit: 10
             });
         });
     </script>

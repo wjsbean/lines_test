@@ -31,7 +31,7 @@
         <li class="layui-nav-item"><a href="">试验阶段报备</a> </li>
         <li class="layui-nav-item"><a href="">试验报告</a> </li>
         <li class="layui-nav-item"><a href="">试验常见问题</a> </li>
-        <li class="layui-nav-item"><a href="{% url 'trait_standard' %}">性状采集标准</a> </li>
+        <li class="layui-nav-item"><a href="{% url 'tmp' %}">性状采集标准</a> </li>
         <li class="layui-nav-item"><a href="">系统使用</a> </li>
         <li class="layui-nav-item">
             <a href="javascript:;">我 </a>
@@ -42,11 +42,6 @@
             </dl>
         </li>
     </ul>
-    <script>
-        layui.use('element', function () {
-            var element = layui.element;
-        })
-    </script>
 
     {% block content %}{% endblock %}
 

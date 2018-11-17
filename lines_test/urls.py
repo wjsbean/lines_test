@@ -20,5 +20,6 @@ from summary import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('login.urls'), name="login"),
-    path('standard/', views.standard, name="trait_standard")
+    path('standard/', views.standard, name="trait_standard"),
+    path('tmp/', views.tmp, name='tmp')
 ]
