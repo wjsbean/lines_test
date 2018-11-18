@@ -7,6 +7,7 @@
     <div class="layui-field-title">
         <h1 style="text-align: center; font-size: 28px">河南省大豆区域试验性状记载标准</h1>
     </div>
+
     <table id="ac_std"></table>
     <script src="/static/layui/layui.js" charset="UTF-8"></script>
     <script>
@@ -19,9 +20,9 @@
                 ,cellMinWidth:80
                 ,page: true
                 ,cols: [[
-                    {field: 'id', title: '编号', width: 60}
-                    ,{field: 'trait', title: '性状名称', width: 150}
-                    ,{field: 'ac_time', title: '采集时间', width: 100}
+                    {field: 'id', title: '编号', width: 60, fixed: true, sort: true}
+                    ,{field: 'trait', title: '性状名称', width: 150, sort: true}
+                    ,{field: 'ac_time', title: '采集时间', width: 100, sort: true}
                     ,{field: 'ac_std', title: '采集标准', width: 700}
                     ,{field: 'precision', title: '数据精度', width: 50}
                     ,{field: 'value', title: '可能值', width: 200}
@@ -29,6 +30,21 @@
                 ]]
                 ,limit: 10
             });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('$demoReload');
+
+                    table.render('testReload', {
+                        where: {
+                            keyword: demoReload.val()
+                        }
+                    })
+                }
+            };
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this):' ';
+            })
         });
     </script>
 {% endblock %}
